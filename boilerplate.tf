@@ -1,6 +1,3 @@
-#############################################################################
-# Boilerplate for terraform and for working with AWS
-#############################################################################
 #
 # Require version of terraform
 # https://www.terraform.io/docs/configuration/terraform.html

@@ -1,6 +1,3 @@
-#############################################################################
-# AWS Infrastructure
-#############################################################################
 #
 # AWS VPC: https://www.terraform.io/docs/providers/aws/r/vpc.html
 #
@@ -19,6 +16,11 @@ resource "aws_vpc" "main" {
 #
 resource "aws_internet_gateway" "default" {
   vpc_id = "${aws_vpc.main.id}"
+  tags {
+    "Name" = "${var.common_name}-${terraform.env}"
+    "Terraform" = "true"
+    "Environment" = "${terraform.env}"
+  }
 }
 #
 # AWS Route
@@ -46,10 +48,42 @@ resource "aws_subnet" "public" {
   }
 }
 #
-# AWS SSH Key Pair; Public key is placed on instances to enable SSH
-# https://www.terraform.io/docs/providers/aws/r/key_pair.html
+# AWS Load Balancing to front our instances
+# https://www.terraform.io/docs/providers/aws/r/elb.html
 #
-resource "aws_key_pair" "aws_ssh_key" {
-  key_name   = "${var.common_name}-${terraform.env}"
-  public_key = "${var.aws_public_key_material}"
+resource "aws_elb" "elb" {
+  name = "${var.common_name}-${terraform.env}"
+  subnets = ["${aws_subnet.public.*.id}"]
+  security_groups = ["${module.elb_http_security_group.id}"]
+  listener {
+    instance_port     = 8080
+    instance_protocol = "http"
+    lb_port           = 80
+    lb_protocol       = "http"
+  }
+  health_check {
+    healthy_threshold   = 2
+    unhealthy_threshold = 2
+    timeout             = 3
+    target              = "HTTP:8080/"
+    interval            = 30
+  }
+  tags {
+    "Terraform" = "true"
+    "Environment" = "${terraform.env}"
+  }
+}
+#
+# AWS Firewalls
+# https://www.terraform.io/docs/providers/aws/r/security_group.html
+#
+module "elb_http_security_group" {
+  source      = "github.com/ckelner/tf_aws_http_sg"
+  vpc_id      = "${aws_vpc.main.id}"
+  name_prefix = "${var.common_name}-${terraform.env}"
+  description = "For allowing HTTP Traffic to the ELB"
+  tags        = {
+    "Terraform" = "true"
+    "Environment" = "${terraform.env}"
+  }
 }
