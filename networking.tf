@@ -62,11 +62,11 @@ resource "aws_elb" "elb" {
     lb_protocol       = "http"
   }
   health_check {
-    healthy_threshold   = 2
-    unhealthy_threshold = 2
-    timeout             = 3
+    healthy_threshold   = 1 # be quick!
+    unhealthy_threshold = 3
+    timeout             = 10
     target              = "HTTP:8080/"
-    interval            = 30
+    interval            = 15
   }
   tags {
     "Terraform" = "true"
