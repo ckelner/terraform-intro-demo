@@ -1,11 +1,14 @@
 # Output
 Example of terraform output
 
-# Plan
+# Environment select
 ```
 $ terraform env select default
 Switched to environment "default"!
+```
 
+# Plan
+```
 $ terraform plan -out=plan.out -var-file=dev.tfvars
 Refreshing Terraform state in-memory prior to plan...
 The refreshed state will be used to calculate this plan, but will not be
@@ -247,3 +250,103 @@ Plan: 16 to add, 0 to change, 0 to destroy.
 ```
 
 # Apply
+TBD
+
+# Destroy
+```
+$ terraform destroy -var-file=dev.tfvars
+Do you really want to destroy?
+  Terraform will delete all your managed infrastructure.
+  There is no undo. Only 'yes' will be accepted to confirm.
+
+  Enter a value: yes
+
+aws_key_pair.aws_ssh_key: Refreshing state... (ID: datadog-demo-default)
+aws_vpc.main: Refreshing state... (ID: vpc-46b1d12f)
+data.aws_availability_zones.available: Refreshing state...
+aws_subnet.public.1: Refreshing state... (ID: subnet-3e338f45)
+aws_security_group.web_sg: Refreshing state... (ID: sg-8f3304e6)
+aws_subnet.public.0: Refreshing state... (ID: subnet-0e790f67)
+aws_internet_gateway.default: Refreshing state... (ID: igw-9a9c19f3)
+aws_subnet.public.2: Refreshing state... (ID: subnet-3439f579)
+aws_security_group.sg: Refreshing state... (ID: sg-3d3e0954)
+aws_security_group_rule.inbound_http_from_anywhere: Refreshing state... (ID: sgrule-3044442922)
+aws_security_group_rule.outbound_internet_to_anywhere: Refreshing state... (ID: sgrule-788482488)
+aws_elb.elb: Refreshing state... (ID: datadog-demo-default)
+aws_security_group_rule.inbound_ssh_from_anywhere: Refreshing state... (ID: sgrule-3861586535)
+aws_security_group_rule.http_to_anywhere: Refreshing state... (ID: sgrule-3762255889)
+aws_launch_configuration.web_lc: Refreshing state... (ID: datadog-demo-default00a96229f752d548edb3899332)
+aws_route.internet_access: Refreshing state... (ID: r-rtb-acabdac51080289494)
+aws_autoscaling_group.web_asg: Refreshing state... (ID: datadog-demo-default)
+aws_autoscaling_group.web_asg: Destroying... (ID: datadog-demo-default)
+aws_security_group_rule.http_to_anywhere: Destroying... (ID: sgrule-3762255889)
+aws_security_group_rule.inbound_ssh_from_anywhere: Destroying... (ID: sgrule-3861586535)
+aws_route.internet_access: Destroying... (ID: r-rtb-acabdac51080289494)
+aws_route.internet_access: Destruction complete
+aws_internet_gateway.default: Destroying... (ID: igw-9a9c19f3)
+aws_security_group_rule.inbound_ssh_from_anywhere: Destruction complete
+module.elb_http_security_group.aws_security_group_rule.inbound_http_from_anywhere: Destroying... (ID: sgrule-3044442922)
+module.elb_http_security_group.aws_security_group_rule.outbound_internet_to_anywhere: Destroying... (ID: sgrule-788482488)
+aws_security_group_rule.http_to_anywhere: Destruction complete
+module.elb_http_security_group.aws_security_group_rule.outbound_internet_to_anywhere: Destruction complete
+module.elb_http_security_group.aws_security_group_rule.inbound_http_from_anywhere: Destruction complete
+aws_autoscaling_group.web_asg: Still destroying... (ID: datadog-demo-default, 10s elapsed)
+aws_internet_gateway.default: Still destroying... (ID: igw-9a9c19f3, 10s elapsed)
+aws_autoscaling_group.web_asg: Still destroying... (ID: datadog-demo-default, 20s elapsed)
+aws_internet_gateway.default: Still destroying... (ID: igw-9a9c19f3, 20s elapsed)
+aws_autoscaling_group.web_asg: Still destroying... (ID: datadog-demo-default, 30s elapsed)
+aws_internet_gateway.default: Still destroying... (ID: igw-9a9c19f3, 30s elapsed)
+aws_autoscaling_group.web_asg: Still destroying... (ID: datadog-demo-default, 40s elapsed)
+aws_internet_gateway.default: Still destroying... (ID: igw-9a9c19f3, 40s elapsed)
+aws_autoscaling_group.web_asg: Still destroying... (ID: datadog-demo-default, 50s elapsed)
+aws_internet_gateway.default: Still destroying... (ID: igw-9a9c19f3, 50s elapsed)
+aws_autoscaling_group.web_asg: Still destroying... (ID: datadog-demo-default, 1m0s elapsed)
+aws_internet_gateway.default: Still destroying... (ID: igw-9a9c19f3, 1m0s elapsed)
+aws_autoscaling_group.web_asg: Still destroying... (ID: datadog-demo-default, 1m10s elapsed)
+aws_internet_gateway.default: Still destroying... (ID: igw-9a9c19f3, 1m10s elapsed)
+aws_autoscaling_group.web_asg: Still destroying... (ID: datadog-demo-default, 1m20s elapsed)
+aws_internet_gateway.default: Still destroying... (ID: igw-9a9c19f3, 1m20s elapsed)
+aws_autoscaling_group.web_asg: Still destroying... (ID: datadog-demo-default, 1m30s elapsed)
+aws_internet_gateway.default: Still destroying... (ID: igw-9a9c19f3, 1m30s elapsed)
+aws_autoscaling_group.web_asg: Destruction complete
+aws_launch_configuration.web_lc: Destroying... (ID: datadog-demo-default00a96229f752d548edb3899332)
+aws_elb.elb: Destroying... (ID: datadog-demo-default)
+aws_elb.elb: Destruction complete
+module.elb_http_security_group.aws_security_group.sg: Destroying... (ID: sg-3d3e0954)
+aws_subnet.public.1: Destroying... (ID: subnet-3e338f45)
+aws_subnet.public.0: Destroying... (ID: subnet-0e790f67)
+aws_subnet.public.2: Destroying... (ID: subnet-3439f579)
+aws_launch_configuration.web_lc: Destruction complete
+aws_security_group.web_sg: Destroying... (ID: sg-8f3304e6)
+aws_key_pair.aws_ssh_key: Destroying... (ID: datadog-demo-default)
+aws_key_pair.aws_ssh_key: Destruction complete
+aws_subnet.public.1: Destruction complete
+aws_internet_gateway.default: Still destroying... (ID: igw-9a9c19f3, 1m40s elapsed)
+aws_security_group.web_sg: Destruction complete
+module.elb_http_security_group.aws_security_group.sg: Still destroying... (ID: sg-3d3e0954, 10s elapsed)
+aws_subnet.public.2: Still destroying... (ID: subnet-3439f579, 10s elapsed)
+aws_subnet.public.0: Still destroying... (ID: subnet-0e790f67, 10s elapsed)
+aws_internet_gateway.default: Still destroying... (ID: igw-9a9c19f3, 1m50s elapsed)
+module.elb_http_security_group.aws_security_group.sg: Still destroying... (ID: sg-3d3e0954, 20s elapsed)
+aws_subnet.public.2: Still destroying... (ID: subnet-3439f579, 20s elapsed)
+aws_subnet.public.0: Still destroying... (ID: subnet-0e790f67, 20s elapsed)
+aws_internet_gateway.default: Still destroying... (ID: igw-9a9c19f3, 2m0s elapsed)
+module.elb_http_security_group.aws_security_group.sg: Still destroying... (ID: sg-3d3e0954, 30s elapsed)
+aws_subnet.public.0: Still destroying... (ID: subnet-0e790f67, 30s elapsed)
+aws_subnet.public.2: Still destroying... (ID: subnet-3439f579, 30s elapsed)
+aws_internet_gateway.default: Still destroying... (ID: igw-9a9c19f3, 2m10s elapsed)
+module.elb_http_security_group.aws_security_group.sg: Still destroying... (ID: sg-3d3e0954, 40s elapsed)
+aws_subnet.public.2: Still destroying... (ID: subnet-3439f579, 40s elapsed)
+aws_subnet.public.0: Still destroying... (ID: subnet-0e790f67, 40s elapsed)
+aws_internet_gateway.default: Still destroying... (ID: igw-9a9c19f3, 2m20s elapsed)
+aws_subnet.public.2: Destruction complete
+aws_subnet.public.0: Destruction complete
+data.aws_availability_zones.available: Destroying... (ID: 2017-06-07 12:08:52.614485044 +0000 UTC)
+data.aws_availability_zones.available: Destruction complete
+aws_internet_gateway.default: Destruction complete
+module.elb_http_security_group.aws_security_group.sg: Destruction complete
+aws_vpc.main: Destroying... (ID: vpc-46b1d12f)
+aws_vpc.main: Destruction complete
+
+Destroy complete! Resources: 17 destroyed.
+```
