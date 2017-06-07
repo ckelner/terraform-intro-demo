@@ -32,3 +32,9 @@ configuration.
 - Execute `terraform plan -out=plan.out -var-file=<env>.tfvars` - be sure to use
 the right `<env>.tfvars` file; see the [Environments](#environments) section for
 more details.
+- When you are comfortable with the plan output, you can run `terraform apply
+plan.out` which will apply the plan from the previous step. The variable file
+does not need to be supplied again, it is built into the plan output.
+- To destroy infrastructure simply run `terraform destroy -var-file=dev.tfvars`
+though there are times where you may want to plan a destroy first. To do so,
+add the `-destroy` flag to `terraform plan` and then `apply` the destroy plan.
