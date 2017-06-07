@@ -11,11 +11,11 @@ output "subnet_ids" {
 output "elb_id" {
     value = "${aws_elb.elb.id}"
 }
+output "elb_dns_name " {
+    value = "${aws_elb.elb.dns_name}"
+}
 output "elb_instance_ids" {
     value = "${aws_elb.elb.instances}"
-}
-output "elb_instance_ips" {
-    value = ["${data.aws_instance.web_elb.*.public_ip}"]
 }
 output "asg_id" {
     value = "${aws_autoscaling_group.web_asg.id}"
