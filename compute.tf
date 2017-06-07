@@ -20,8 +20,14 @@ resource "aws_autoscaling_group" "web_asg" {
   launch_configuration      = "${aws_launch_configuration.web_lc.name}"
   load_balancers            = ["${aws_elb.elb.name}"]
   termination_policies      = ["OldestLaunchConfiguration"]
+  # Kelnerhax: last min hack for demo was to switch this to "0"
+  # due to some firewall issues that were present on my part --
+  # we actually fixed this during the demo
   wait_for_capacity_timeout = "10m" # 5m isn't quite enough time
   min_elb_capacity          = "${var.aws_asg_min}"
+  # you wouldn't normally use this because you'd want it to
+  # drain, but for demo purposes it's useful to move quickly
+  force_delete              = true
   tag = {
     key                     = "Name"
     value                   = "${var.common_name}-${terraform.env}"
