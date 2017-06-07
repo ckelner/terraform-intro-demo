@@ -75,7 +75,9 @@ resource "aws_elb" "elb" {
 }
 #
 # AWS Firewalls
-# https://www.terraform.io/docs/providers/aws/r/security_group.html
+#
+# Example using a module
+# https://github.com/ckelner/tf_aws_http_sg
 #
 module "elb_http_security_group" {
   source      = "github.com/ckelner/tf_aws_http_sg"
@@ -86,4 +88,37 @@ module "elb_http_security_group" {
     "Terraform" = "true"
     "Environment" = "${terraform.env}"
   }
+}
+#
+# Security Group not using a module
+# https://www.terraform.io/docs/providers/aws/r/security_group.html
+#
+resource "aws_security_group" "web_sg" {
+  name_prefix = "${var.common_name}-${terraform.env}"
+  description = "Security Group from web node SSH"
+  vpc_id      = "${aws_vpc.main.id}"
+  tags        = {
+    "Terraform" = "true"
+    "Environment" = "${terraform.env}"
+  }
+}
+#
+# Security Group Rules
+# https://www.terraform.io/docs/providers/aws/r/security_group_rule.html
+#
+resource "aws_security_group_rule" "inbound_ssh_from_anywhere" {
+  type              = "ingress"
+  from_port         = 22
+  to_port           = 22
+  protocol          = "tcp"
+  cidr_blocks       = ["0.0.0.0/0"]
+  security_group_id = "${aws_security_group.web_sg.id}"
+}
+resource "aws_security_group_rule" "http_to_anywhere" {
+  type                     = "egress"
+  from_port                = 8080
+  to_port                  = 8080
+  protocol                 = "tcp"
+  source_security_group_id = "${module.elb_http_security_group.id}"
+  security_group_id        = "${aws_security_group.web_sg.id}"
 }
