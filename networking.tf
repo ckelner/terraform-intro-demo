@@ -116,10 +116,13 @@ resource "aws_security_group_rule" "inbound_ssh_from_anywhere" {
 }
 resource "aws_security_group_rule" "inbound_http_from_elb" {
   type                     = "ingress"
-  from_port                = 8080
-  to_port                  = 8080
+  from_port                = 80
+  to_port                  = 80
   protocol                 = "tcp"
   source_security_group_id = "${module.elb_http_security_group.id}"
+  # silly hack for demo -- removed for the above after fixing the port issue
+  # kept here for posterity for those that attended the demo
+  # cidr_blocks     = ["0.0.0.0/0"]
   security_group_id        = "${aws_security_group.web_sg.id}"
 }
 resource "aws_security_group_rule" "outbound_to_anywhere" {
