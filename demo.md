@@ -12,6 +12,9 @@ Demo script for data dog
 - `terraform apply plan.out`
 - `terraform show`
 
+## Instance IP for SSH if we want
+`aws ec2 describe-instances --instance-ids <IDHERE> --region=us-east-2`
+
 ## Make change
 TBD
 
