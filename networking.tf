@@ -56,16 +56,16 @@ resource "aws_elb" "elb" {
   subnets = ["${aws_subnet.public.*.id}"]
   security_groups = ["${module.elb_http_security_group.id}"]
   listener {
-    instance_port     = 8080
+    instance_port     = 80
     instance_protocol = "http"
     lb_port           = 80
     lb_protocol       = "http"
   }
   health_check {
-    healthy_threshold   = 1 # be quick!
+    healthy_threshold   = 2 # be quick!
     unhealthy_threshold = 3
     timeout             = 10
-    target              = "HTTP:8080/"
+    target              = "HTTP:80/"
     interval            = 15
   }
   tags {
