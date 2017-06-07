@@ -27,6 +27,9 @@ resource "aws_autoscaling_group" "web_asg" {
     value                   = "${var.common_name}-${terraform.env}"
     propagate_at_launch     = "true"
   }
+  lifecycle {
+    create_before_destroy   = true
+  }
 }
 #
 # AWS Launch Config
@@ -40,4 +43,13 @@ resource "aws_launch_configuration" "web_lc" {
   user_data                   = "${file("userdata.sh")}"
   key_name                    = "${aws_key_pair.aws_ssh_key.key_name}"
   associate_public_ip_address = true
+  # launch configs cannot be updated after they've been
+  # created, so terraform will delete and create a new one
+  # when there are updates. AWS will not allow an LC to be
+  # deleted if it is part of an ASG and another doesn't yet
+  # exist. This lifecycle rule tells terraform to create a
+  # new LC first, then delete the old one.
+  lifecycle {
+    create_before_destroy     = true
+  }
 }
