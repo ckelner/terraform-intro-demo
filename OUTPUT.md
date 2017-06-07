@@ -24,6 +24,33 @@ plan.
 
 Path: plan.out
 
++ aws_autoscaling_group.web_asg
+    arn:                               "<computed>"
+    availability_zones.#:              "<computed>"
+    default_cooldown:                  "<computed>"
+    desired_capacity:                  "1"
+    force_delete:                      "true"
+    health_check_grace_period:         "300"
+    health_check_type:                 "<computed>"
+    launch_configuration:              "${aws_launch_configuration.web_lc.name}"
+    load_balancers.#:                  "1"
+    load_balancers.3003123756:         "datadog-demo-default"
+    max_size:                          "2"
+    metrics_granularity:               "1Minute"
+    min_elb_capacity:                  "1"
+    min_size:                          "1"
+    name:                              "datadog-demo-default"
+    protect_from_scale_in:             "false"
+    tag.#:                             "1"
+    tag.100011191.key:                 "Name"
+    tag.100011191.propagate_at_launch: "true"
+    tag.100011191.value:               "datadog-demo-default"
+    target_group_arns.#:               "<computed>"
+    termination_policies.#:            "1"
+    termination_policies.0:            "OldestLaunchConfiguration"
+    vpc_zone_identifier.#:             "<computed>"
+    wait_for_capacity_timeout:         "5m"
+
 + aws_elb.elb
     availability_zones.#:                   "<computed>"
     connection_draining:                    "false"
@@ -67,6 +94,20 @@ Path: plan.out
     key_name:    "datadog-demo-default"
     public_key:  "ssh-rsa AAAAB3NzaC1yc2EAAAADAQABAAABAQDUT+RkR7kRcs7m/VnfbZFzNeVLNrHc1hunqfUJcqzh03j8C5G9D+sJM5Ks/9+0zQMspYbSvdz82KS1k5UTAYj/4asoOABV+UjUwOWHVDmyB4bPael583QLu62q31zhQXhHxueoB1bA6vPXa/bvvLfvV+p6M746I5nUuqEqZLJSNXopC/iF0gCjlTa2ovLudJSqTwZ9K+brHsqAiMWF1xEPa3lc2buHpfLQa/Jp6YFDVEPhuyj+Uqcx63D+hRtXXBgNalRfdG8MFRhtPJ+T4ME6cgr96zGtPzAHJA0DPAvwGWNaGKdQtb31+xkKAh0e4xAzV24+SqkQjluugVH5U9gJ Administrator@chriskelner-mbp"
 
++ aws_launch_configuration.web_lc
+    associate_public_ip_address: "true"
+    ebs_block_device.#:          "<computed>"
+    ebs_optimized:               "<computed>"
+    enable_monitoring:           "true"
+    image_id:                    "ami-4191b524"
+    instance_type:               "t2.nano"
+    key_name:                    "datadog-demo-default"
+    name:                        "<computed>"
+    name_prefix:                 "datadog-demo-default"
+    root_block_device.#:         "<computed>"
+    security_groups.#:           "<computed>"
+    user_data:                   "686fdda7fa2fa6636c165e69e100e815b5d77ac4"
+
 + aws_route.internet_access
     destination_cidr_block:     "0.0.0.0/0"
     destination_prefix_list_id: "<computed>"
@@ -79,6 +120,38 @@ Path: plan.out
     origin:                     "<computed>"
     route_table_id:             "${aws_vpc.main.main_route_table_id}"
     state:                      "<computed>"
+
++ aws_security_group.web_sg
+    description:      "Security Group from web node SSH"
+    egress.#:         "<computed>"
+    ingress.#:        "<computed>"
+    name:             "<computed>"
+    name_prefix:      "datadog-demo-default"
+    owner_id:         "<computed>"
+    tags.%:           "2"
+    tags.Environment: "default"
+    tags.Terraform:   "true"
+    vpc_id:           "${aws_vpc.main.id}"
+
++ aws_security_group_rule.http_to_anywhere
+    from_port:                "8080"
+    protocol:                 "tcp"
+    security_group_id:        "${aws_security_group.web_sg.id}"
+    self:                     "false"
+    source_security_group_id: "${module.elb_http_security_group.id}"
+    to_port:                  "8080"
+    type:                     "egress"
+
++ aws_security_group_rule.inbound_ssh_from_anywhere
+    cidr_blocks.#:            "1"
+    cidr_blocks.0:            "0.0.0.0/0"
+    from_port:                "22"
+    protocol:                 "tcp"
+    security_group_id:        "${aws_security_group.web_sg.id}"
+    self:                     "false"
+    source_security_group_id: "<computed>"
+    to_port:                  "22"
+    type:                     "ingress"
 
 + aws_subnet.public.0
     assign_ipv6_address_on_creation: "false"
@@ -170,5 +243,7 @@ Path: plan.out
     type:                     "egress"
 
 
-Plan: 11 to add, 0 to change, 0 to destroy.
+Plan: 16 to add, 0 to change, 0 to destroy.
 ```
+
+# Apply
