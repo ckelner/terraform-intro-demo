@@ -7,3 +7,6 @@
 
 # Plan outfiles
 *.out
+
+# Not used w/ source control
+.terraform.tfstate.lock.info
