@@ -1,7 +1,6 @@
-# Datadog Solutions Engineer Demo
-A Terraform demo project for Solutions Engineer role at Datadog. This was used
-as a demo as an introduction/pitch for terraform. A short presentation was given
-prior, [available
+# Terraform Introduction Demo
+A demo project for introducting terraform. A short presentation goes with this
+code base, [available
 here](https://docs.google.com/presentation/d/1L8BQ1ckdRQq1J-3uISvu8icPzTgpkEVlZR0EllCeMz4/edit?usp=sharing).
 
 # Environments
