@@ -43,3 +43,9 @@ does not need to be supplied again, it is built into the plan output.
 - To destroy infrastructure simply run `terraform destroy -var-file=dev.tfvars`
 though there are times where you may want to plan a destroy first. To do so,
 add the `-destroy` flag to `terraform plan` and then `apply` the destroy plan.
+
+# Authors
+[Chris Kelner](http://github.com/ckelner)
+
+# License
+MIT; see [LICENSE](LICENSE) for details.
