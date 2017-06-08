@@ -25,6 +25,9 @@ be used by QA when promoting changes from development prior to going to
 production.
 
 # Usage
+For a quick rough script for the demo, please look at [demo.md](demo.md); below
+are instructions on how to work with this terraform configuration template.
+
 - Switch into the environment you want to create, update, or destroy
 infrastructure for, e.g. `terraform env select default`. A list of environments
 can be made available by typing `terraform env list`. *Remember* `default` is
