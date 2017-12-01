@@ -1,5 +1,5 @@
 # Demo
-Demo script for data dog
+Demo script for Datadog
 
 ## Plan
 - `terraform env list`
