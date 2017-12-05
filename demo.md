@@ -15,9 +15,6 @@ Demo script for Datadog
 ## Instance IP for SSH if we want
 `aws ec2 describe-instances --instance-ids <IDHERE> --region=us-east-2`
 
-## Make change
-TBD
-
 ## Switch environment
 - `terraform env select test`
 - `terraform show`
