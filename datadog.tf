@@ -1,5 +1,3 @@
-# Commented out -- didn't demo
-/*
 #
 # DD Provider: https://www.terraform.io/docs/providers/datadog/index.html
 #
@@ -33,4 +31,3 @@ resource "datadog_monitor" "foo" {
   }
   tags = ["foo:bar", "baz"]
 }
-*/
